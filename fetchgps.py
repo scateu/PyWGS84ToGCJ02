@@ -47,8 +47,21 @@ if __name__ == "__main__":
     origin_position = ()
     current_position = ()
 
-    origin_position = decodeNMEAStream(ser,GCJ02=True)
+    _avg = 5
+    print 'Average %d origin position'%_avg,
+    _x = 0
+    _y = 0
+    for i in range(_avg):
+        _p = decodeNMEAStream(ser,GCJ02=False)
+        _x += _p[0]
+        _y += _p[1]
+        print '.',
+    x = _x / _avg
+    y = _y / _avg 
+    origin_position = (x,y)
+    print 'done'
+
     while True:
-        current_position = decodeNMEAStream(ser,GCJ02=True)
+        current_position = decodeNMEAStream(ser,GCJ02=False)
         print current_position,
         print "distance:",distance(origin_position,current_position)*1000,'m'
